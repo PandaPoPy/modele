@@ -37,7 +37,20 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+
+    #apps
+    'blog',
+    'taggit',
+
+    #dev
+    'debug_toolbar',
+    'django_extensions',
+    'django.contrib.admindocs',
+    #'django.contrib.databrowse',
 ]
+
+INTERNAL_IPS = ('127.0.0.1',)  # Used by app debug_toolbar
+
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -54,7 +67,7 @@ ROOT_URLCONF = 'mydjango.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [os.path.join(BASE_DIR, '..//', 'templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -63,6 +76,7 @@ TEMPLATES = [
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
             ],
+            'debug': DEBUG, #rajout pour activer le débogage de django et de ses templates pour django>=1.8
         },
     },
 ]
@@ -76,7 +90,7 @@ WSGI_APPLICATION = 'mydjango.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'NAME': os.path.join(BASE_DIR, '../../../../../../db.sqlite3'),
     }
 }
 
@@ -103,9 +117,11 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/1.10/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+#modifié
+LANGUAGE_CODE = 'fr-fr'
 
-TIME_ZONE = 'UTC'
+#modifié
+TIME_ZONE = 'Europe/Paris'
 
 USE_I18N = True
 
@@ -118,3 +134,29 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.10/howto/static-files/
 
 STATIC_URL = '/static/'
+
+STATICFILES_DIRS = (
+    os.path.join(BASE_DIR, '..//', 'static'),
+)
+STATIC_ROOT = os.path.join(BASE_DIR, 'mydjango/../static')
+
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, '../../media')
+
+#en options ???
+STATICFILES_FINDERS = (
+    'django.contrib.staticfiles.finders.FileSystemFinder',
+    'django.contrib.staticfiles.finders.AppDirectoriesFinder',
+    #'django.contrib.staticfiles.finders.DefaultStorageFinder',
+)
+TEMPLATES_LOADERS = (
+    'django.template.loaders.filesystem.Loader',
+    'django.template.loaders.app_directories.Loader',
+)
+
+# Email
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_HOST_USER = 'lhostevincent@gmail.com'
+EMAIL_HOST_PASSWORD = 'popi2013'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
