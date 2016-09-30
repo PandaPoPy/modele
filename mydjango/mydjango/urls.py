@@ -16,10 +16,29 @@ Including another URLconf
 from django.conf.urls import url, include
 from django.contrib import admin
 
+from django.contrib.sitemaps.views import sitemap
+from blog.sitemaps import PostSitemap
+
+from django.conf import settings
+from django.conf.urls.static import static
+
+
+sitemaps = {
+    'posts': PostSitemap,
+}
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^admin/doc/', include('django.contrib.admindocs.urls')),
 
     url(r'^blog/', include('blog.urls', namespace='blog', app_name='blog')),
+    url(r'^api/', include('api_rest.urls', namespace='api_rest')),
+    url(r'sitemap\.xml$', sitemap, {'sitemaps': sitemaps}, name='django.contrib.sitemaps.views.sitemap'),
+    url(r'^account/', include('account.urls')),
+    url('social-auth/', include('social.apps.django_app.urls', namespace='social')),
+    url(r'^images/', include('images.urls', namespace='images')),
 ]
+
+# only for dev not for prod
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root = settings.MEDIA_ROOT)

@@ -27,10 +27,20 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
+SITE_ID =1
 
 # Application definition
 
 INSTALLED_APPS = [
+
+    #apps
+    'blog',
+    'taggit',
+    'rest_framework',
+    'account',
+    'images',
+
+    #installed by default
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -38,15 +48,20 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
-    #apps
-    'blog',
-    'taggit',
+    #sitemap
+    'django.contrib.sites',
+    'django.contrib.sitemaps',
 
     #dev
     'debug_toolbar',
     'django_extensions',
     'django.contrib.admindocs',
     #'django.contrib.databrowse',
+
+    #social network
+    'social.apps.django_app.default',
+
+    'sorl.thumbnail',
 ]
 
 INTERNAL_IPS = ('127.0.0.1',)  # Used by app debug_toolbar
@@ -160,3 +175,53 @@ EMAIL_HOST_USER = 'lhostevincent@gmail.com'
 EMAIL_HOST_PASSWORD = 'popi2013'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+
+
+REST_FRAMEWORK = {
+    'DEFAULT_PERMISSION_CLASSES': [
+    'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly'
+    ],
+    'DEFAULT_RENDERER_CLASSES': [
+        'rest_framework.renderers.JSONRenderer',
+        'rest_framework.renderers.BrowsableAPIRenderer'
+    ],
+}
+
+
+from django.core.urlresolvers import reverse_lazy
+
+LOGIN_REDIRECT_URL = reverse_lazy('dashboard')
+LOGIN_URL = reverse_lazy('login')
+LOGOUT_URL = reverse_lazy('logout')
+
+
+# to be able to authenticate with email and also Social Net
+AUTHENTICATION_BACKENDS = (
+
+    'django.contrib.auth.backends.ModelBackend',
+    'account.authentication.EmailAuthBackend',
+    'social.backends.facebook.Facebook2OAuth2',
+    'social.backends.twitter.TwitterOAuth',
+    'social.backends.google.GoogleOAuth2',
+)
+
+
+# Facebook
+SOCIAL_AUTH_FACEBOOK_KEY = '300610793643444' # Facebook App ID
+SOCIAL_AUTH_FACEBOOK_SECRET = 'af36a2e24a7cd34108e474d6d82ae732' # Facebook App Secret
+SOCIAL_AUTH_FACEBOOK_SCOPE = ['email']
+
+
+#Twitter
+SOCIAL_AUTH_TWITTER_KEY = 'htNsFy5c4g1i3uF8Xnam9UwMW' # Twitter Consumer Key
+SOCIAL_AUTH_TWITTER_SECRET = 'C720lqzdmSUp9eKjvezcTAwIj2aaCUzwDunH8zMPYGQSHTe4jC' # Twitter Consumer Secret
+
+
+#Google
+SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = '436363011747-icln3m1bnu96kha1n0v16l3oihua4rsg.apps.googleusercontent.com' # Google Consumer Key
+SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = 'MafQ_r30wG6m7dga6TmgSFUs' # Google Consumer Secret
+
+
+#Thumbnail
+THUMBNAIL_DEBUG = True

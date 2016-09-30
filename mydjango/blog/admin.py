@@ -23,6 +23,11 @@ class ArticleAdmin(admin.ModelAdmin):
     inlines = [CommentaireInline]
 
 
+class CommentsInline(admin.TabularInline):
+    model = Comment
+    extra = 1
+
+
 class PostAdmin(admin.ModelAdmin):
     list_display = ('title', 'slug', 'author', 'publish', 'status')
     list_filter = ('status', 'created', 'publish', 'author')
@@ -31,6 +36,7 @@ class PostAdmin(admin.ModelAdmin):
     #raw_id_fields = ('author',)
     date_hierarchy = 'publish'
     ordering = ['status', 'publish']
+    inlines = [CommentsInline]
 
 
 class CommentAdmin(admin.ModelAdmin):

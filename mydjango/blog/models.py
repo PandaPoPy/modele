@@ -93,3 +93,11 @@ class Comment(models.Model):
 
     def __str__(self):
         return 'Comment by {} on {}'.format(self.name, self.post)
+
+'''
+class Content(models.Model):
+    module = models.ForeignKey(Module, related_name='contents')
+    content_type = models.ForeignKey(ContentType)
+    object_id = models.PositiveIntegerField()
+    item = GenericForeignKey('content_type', 'object_id')
+'''
